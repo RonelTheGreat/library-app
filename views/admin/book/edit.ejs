@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AutoLib | ADMIN</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="/assets/css/all.css">
+    <link rel="stylesheet" href="/assets/css/form.css">
+</head>
+
+<body>
+
+    <script src="/assets/js/jquery.js"></script>
+    <div class="parent">
+
+        <% include ../../partials/nav %>
+
+        <div class="heading">
+            <h3><i class="fas fa-edit"></i> edit
+                <%= book.title %>
+            </h3>
+        </div>
+
+        <div class="edit-book-main">
+
+            <div class="edit-overlay">
+                <div class="prompt bg-navy">
+                    <h3 class="tag"><i class="far fa-check-circle fg-green"></i> successfully updated book</h3>
+                    <button class="edit-btn-ok"><i class="far fa-thumbs-up"></i> ok</button>
+                </div>
+            </div>
+
+            <div class="del-overlay">
+                <div class="book-del-prompt bg-navy" id="prompt">
+                    <h3 class="tag"><i class="fas fa-book-open"></i>
+                        are you sure you want to delete this book?</h3>
+                    <button class="del-btn-ok"><i class="far fa-thumbs-up"></i> confirm</button>
+                    <button class="del-btn-cancel"><i class="far fa-times-circle"></i> cancel</button>
+                </div>
+            </div>
+
+            <div class="form-cont">
+                <div class="msg-container" id="msg"></div>
+                <form id="edit-form">
+
+                    <input id="id" type="text" name="id" value="<%= book._id %>" style="display: none;">
+
+                    <label>title</label>
+                    <input type="text" name="title" pattern="[a-zA-Z ]+" value="<%= book.title %>">
+
+                    <label>author</label>
+                    <input type="text" name="author" pattern="[a-zA-Z. ]+" value="<%= book.author %>">
+
+                    <label>publisher</label>
+                    <input type="text" name="publisher" pattern="[a-zA-Z. ]+" value="<%= book.publisher %>">
+
+                    <div class="shrink">
+
+                        <div class="bk-year-published">
+                            <label>yr. published</label>
+                            <input type="number" name="yearPublished" value="<%= book.yearPublished %>">
+                        </div>
+
+
+                        <div class="bk-validity">
+                            <label>validity</label>
+                            <input type="number" name="validity" value="<%= book.validity %>">
+                        </div>
+
+                        <% if (book.edition) { %>
+                        <div class="bk-edition">
+                            <label>edition</label>
+                            <input type="text" name="edition" value="<%= book.edition %>">
+                        </div>
+                        <% } %>
+                    </div>
+
+                    <label>(fine / day) for overdue books</label>
+                    <input type="number" name="fine" min="0" value="<%= book.fine %>">
+
+                    <div class="form-buttons">
+                        <button class="submit"><i class="fas fa-check"></i> update book</button>
+                        <button class="del-btn"><i class="far fa-trash-alt"></i> delete book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // overlay and PROMPT
+        var overlay = document.querySelector('.edit-overlay');
+        var okBtn = document.querySelector('.edit-btn-ok');
+        var promptTag = document.querySelector('.tag');
+
+        // delete overlay and PROMPT
+        var delOverlay = document.querySelector('.del-overlay');
+        var delOk = document.querySelector('.del-btn-ok');
+        var delCancel = document.querySelector('.del-btn-cancel');
+
+        // delete button
+        var delBtn = document.querySelector('.del-btn');
+        var updateBtn = document.querySelector('.submit');
+
+        // delete button event
+        delBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            overlay.style.display = 'none';
+            delOverlay.style.display = 'flex';
+            delOverlay.style.paddingTop = '20%';
+            document.querySelector('.edit-book-main').style.overflow = 'hidden';
+        })
+
+        // delete ok button
+        delOk.addEventListener('click', function () {
+                delOverlay.style.display = 'none';
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/delete_book',
+                    data: {
+                        id: $('#id').val(),
+                    },
+                    success: function (res) {
+                        if (res.success) {
+                            overlay.style.display = 'flex';
+                            overlay.style.paddingTop = '20%';
+                            promptTag.innerHTML = '<i class="far fa-check-circle fg-green"></i> successfully deleted book';
+                        }
+                    }
+                })
+        })
+
+        // delete ok button
+        delCancel.addEventListener('click', function () {
+            delOverlay.style.display = 'none';
+            document.querySelector('.edit-book-main').style.overflowY = 'scroll';
+        })
+
+
+        updateBtn.addEventListener('click', () => {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/edit_book',
+                data: {
+                    id: $('input[name=id]').val(),
+                    title: $('input[name=title]').val(),
+                    author: $('input[name=author]').val(),
+                    publisher: $('input[name=publisher]').val(),
+                    yearPublished: $('input[name=yearPublished]').val(),
+                    validity: $('input[name=validity]').val(),
+                    fine: $('input[name=fine]').val(),
+                    edition: $('input[name=edition]').val() && $('input[name=edition]').val(),
+                },
+                beforeSend: function () {
+                    $('.submit').text('Processing request ...');
+                    $('.submit').attr('disabled', 'disabled');
+                },
+                success: function (res) {
+
+                    if (res.success) {
+                        overlay.style.display = 'flex';
+                        overlay.style.paddingTop = '20%';
+                        document.querySelector('.edit-book-main').style.overflow = 'hidden';
+                    }
+
+                    $('.submit').text('confirm update');
+                    $('.submit').removeAttr('disabled');
+
+                }
+            })
+        })
+
+        // ok button
+        okBtn.addEventListener('click', function () {
+            window.location.href = `/admin/show/available`;
+            overlay.style.display = 'none';
+        })
+    </script>
+</body>
+
+</html>

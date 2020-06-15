@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>AutoLib | ADMIN</title>
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/admin.css" />
+        <link rel="stylesheet" href="/assets/css/all.css" />
+    </head>
+    <body>
+        <div class="parent">
+            <% include ../../partials/nav %>
+
+            <div class="heading">
+                <h3><i class="fas fa-users"></i> Users</h3>
+            </div>
+
+            <div class="user-main">
+                <% users.forEach(user => { %>
+
+                <div class="user bg-navy">
+                    <div class="dp bg-blue">
+                        <div class="img-cont">
+                            <img
+                                src="../../images/avatars/<%= user.avatar %>"
+                                alt="dp"
+                            />
+                        </div>
+
+                        <div class="edit">
+                            <a id="edit" href="/admin/<%= user._id %>/edit">
+                                <span class="action-lbl">edit</span>
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="name">
+                        <p id="fullname">
+                            <%= `${user.fname} ${user.mi}. ${user.lname}` %>
+                        </p>
+                    </div>
+
+                    <div class="details">
+                        <p>Contact #: <%= user.contact %></p>
+                        <% if (user.fine || user.fine != 0) { %>
+                        <p class="fine">FINE: <%= user.fine %> pesos</p>
+                        <% } %> <% if (user.borrowedBooks.length > 0) { %>
+                        <p>Borrowed Book / s:</p>
+                        <% } %> <% user.borrowedBooks.forEach(book => { %>
+                        <ul>
+                            <li>
+                                <%= book.title %>
+                                <ul>
+                                    <li>
+                                        Date Borrowed: <%= book.dateBorrowed %>
+                                    </li>
+                                    <li>Due Date: <%= book.dueDate %></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <% }); %>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </body>
+</html>

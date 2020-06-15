@@ -1,0 +1,75 @@
+.parent {
+    grid-template-columns: 64% 35%;
+    grid-template-areas:
+        'greet dp'
+        'tagl dp'
+        'btn dp'
+        'footer dp';
+    column-gap: 1%;
+    padding: 1%;
+}
+
+.parent > div {
+    text-align: center;
+}
+
+/*************************************************/
+/*                    GREET                      */
+/*************************************************/
+.greet {
+    grid-area: greet;
+    font-family: Courgette, cursive;
+    letter-spacing: 1px;
+    align-self: center;
+}
+
+.fname {
+    text-transform: capitalize;
+}
+/*                   END GREET                   */
+/*************************************************/
+
+/*************************************************/
+/*                    TAG-LINE                   */
+/*************************************************/
+.tag-line {
+    grid-area: tagl;
+    align-self: center;
+}
+/*                   END TAG-LINE                */
+/*************************************************/
+
+/*************************************************/
+/*                    BUTTONS                    */
+/*************************************************/
+.btn-cont {
+    grid-area: btn;
+    align-self: center;
+}
+
+.btn-cont a {
+    padding: 1.6em;
+    box-shadow: 0 0 5px #0e0b24;
+}
+/*                   END BUTTONS                 */
+/*************************************************/
+
+/*************************************************/
+/*                  DISPLAY PIC                  */
+/*************************************************/
+.dp {
+    grid-area: dp;
+    position: relative;
+}
+
+.dp > img {
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: 0 0 10px #0e0b24;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+/*                END DISPLAY PIC                */
+/*************************************************/

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>AutoLib | ADMIN</title>
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/admin.css" />
+        <link rel="stylesheet" href="/assets/css/all.css" />
+        <link rel="stylesheet" href="/assets/css/form.css" />
+    </head>
+
+    <body>
+        <script src="/assets/js/jquery.js"></script>
+
+        <div class="parent">
+            <% include ../partials/nav %>
+
+            <div class="heading">
+                <h3><i class="fas fa-user-secret"></i> add a new admin</h3>
+            </div>
+
+            <div class="add-admin-main">
+                <div class="form-cont">
+                    <div class="msg-container" id="msg"></div>
+                    <form id="form-add-admin">
+                        <label>Username</label>
+                        <input type="text" name="username" />
+
+                        <label>Password</label>
+                        <input type="password" name="password" />
+
+                        <label>Re-type Password</label>
+                        <input type="password" name="cpassword" />
+
+                        <button>
+                            <i class="fas fa-check"></i> create new account
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document
+                .querySelector('#form-add-admin')
+                .addEventListener('click', () => {
+                    document.querySelector('#msg').innerHTML = '';
+                });
+            $(document).ready(function() {
+                $('#form-add-admin').submit(function(e) {
+                    // prevent default action of submitting a form
+                    e.preventDefault();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/add_admin',
+                        data: $(this).serialize(),
+                        success: function(res) {
+                            if (res.errors) {
+                                let errors = res.errors;
+
+                                console.log(errors);
+                                // clear msg container
+                                $('.msg-container').html('');
+
+                                // go to error msg location (scroll up)
+                                window.location.href = '#msg';
+
+                                // flash every error msgs
+                                errors.forEach(error => {
+                                    $('.msg-container').append(
+                                        `<p class="error"><i class="fas fa-exclamation-circle"></i> ${error.msg}</p>`
+                                    );
+                                });
+                            }
+
+                            if (res.success) {
+                                // clear input values
+                                $('input[name=username]').val('');
+                                $('input[name=password]').val('');
+                                $('input[name=cpassword]').val('');
+
+                                // clear msg container
+                                $('.msg-container').html('');
+
+                                // go to success msg location (scroll up)
+                                window.location.href = '#msg';
+
+                                $('.msg-container').append(
+                                    '<p class="success"><i class="fas fa-check"></i> admin successfully added!</p>'
+                                );
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

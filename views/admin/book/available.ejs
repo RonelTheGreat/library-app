@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>AutoLib | ADMIN</title>
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/admin.css" />
+        <link rel="stylesheet" href="/assets/css/all.css" />
+    </head>
+
+    <body>
+        <div class="parent">
+            <% include ../../partials/nav %>
+
+            <div class="heading">
+                <h3><i class="fas fa-book"></i> Available Books</h3>
+            </div>
+
+            <div class="main">
+                <% books.forEach(book => { %>
+                <div class="book">
+                    <div class="title">
+                        <i class="fas fa-book"></i>
+                        <a href="/admin/<%= book._id %>/edit_book"
+                            ><%= book.title %></a
+                        >
+                    </div>
+                    <div class="details">
+                        <% if (book.edition) {%>
+                        <p>Edition: <%= book.edition %></p>
+                        <% } %>
+                        <p>Author/s: <%= book.author %></p>
+                        <p>Year Published: <%= book.yearPublished%></p>
+                        <p>Publisher: <%= book.publisher %></p>
+                        <p class="validity">
+                            Validity: <% if (book.validity <= 1) { %> <%=
+                            book.validity %> day <% } else { %> <%=
+                            book.validity %> days <% } %>
+                        </p>
+                        <p>Fine / day (if overdue): P <%= book.fine %></p>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </div>
+    </body>
+</html>

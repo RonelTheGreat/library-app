@@ -1,0 +1,62 @@
+.parent {
+    border-left: 2px solid #fc7242;
+    position: relative;
+    width: 50%;
+    height: 50%;
+    margin: 5% 25%;
+    padding: 1em;
+}
+
+.heading {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.parent form {
+    padding: 0.2em;
+    max-width: 100%;
+}
+
+form label {
+    margin-left: 1%;
+}
+
+form input {
+    display: block;
+    width: 92%;
+    padding: 2.5%;
+    margin: 3% 1%;
+}
+
+form button {
+    width: 97%;
+    padding: 3%;
+    margin: 3% 1.5% 1%;
+    font-size: 1.1em;
+}
+
+.back {
+    text-align: center;
+    margin: 5% 0 0;
+}
+
+.back a {
+    color: #f0f0f0;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.back a:hover {
+    text-decoration: underline;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+    .parent {
+        border-left: 2px solid #fc7242;
+        position: relative;
+        width: 90%;
+        height: 50%;
+        margin: 25% 5%;
+        padding: 1%;
+    }
+}

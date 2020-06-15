@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>AutoLib | ADMIN</title>
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/admin.css" />
+        <link rel="stylesheet" href="/assets/css/all.css" />
+        <link rel="stylesheet" href="/assets/css/form.css" />
+    </head>
+    <body>
+        <script src="/assets/js/jquery.js"></script>
+        <div class="parent">
+            <% include ../../partials/nav %>
+
+            <div class="heading">
+                <h3>
+                    <i class="fas fa-edit"></i> edit <%= user.fname %>'s profile
+                </h3>
+            </div>
+
+            <div class="add-user-main">
+                <div class="edit-overlay">
+                    <div class="prompt bg-navy">
+                        <h3 class="tag">
+                            <i class="far fa-check-circle fg-green"></i>
+                            successfully updated user
+                        </h3>
+                        <button class="edit-btn-ok">
+                            <i class="far fa-thumbs-up"></i> ok
+                        </button>
+                    </div>
+                </div>
+
+                <div class="del-overlay">
+                    <div class="del-prompt bg-navy">
+                        <h3 class="tag">
+                            <i class="fas fa-user-times"></i> are you sure you
+                            want to delete this user?
+                        </h3>
+                        <button class="del-btn-ok">
+                            <i class="far fa-thumbs-up"></i> confirm
+                        </button>
+                        <button class="del-btn-cancel">
+                            <i class="far fa-times-circle"></i> cancel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="upload-container">
+                    <div class="canvas-container">
+                        <canvas id="canvas" width="205" height="205"></canvas>
+                    </div>
+                    <img
+                        id="avatar"
+                        src="/images/avatars/<%= user.avatar %>"
+                        hidden
+                    />
+                    <div class="lbl-container">
+                        <label class="lbl bg-blue" for="file"
+                            >Update Photo</label
+                        >
+                    </div>
+                </div>
+
+                <div class="form-cont">
+                    <div class="msg-container" id="msg"></div>
+                    <form id="edit-form" enctype="multipart/form-data">
+                        <input id="file" type="file" name="avatar" />
+
+                        <label>First Name</label>
+                        <input
+                            type="text"
+                            name="user[fname]"
+                            pattern="[a-zA-Z ]+"
+                            value="<%= user.fname %>"
+                        />
+
+                        <label>Middle Initial</label>
+                        <input
+                            type="text"
+                            name="user[mi]"
+                            pattern="[a-zA-Z]"
+                            value="<%= user.mi %>"
+                        />
+
+                        <label>Last Name</label>
+                        <input
+                            type="text"
+                            name="user[lname]"
+                            pattern="[a-zA-Z ]+"
+                            value="<%= user.lname %>"
+                        />
+
+                        <label>Contact Number</label>
+                        <input
+                            type="text"
+                            name="user[contact]"
+                            pattern="[0-9]+"
+                            maxlength="11"
+                            minlength="11"
+                            placeholder="11-digit number"
+                            value="<%= user.contact %>"
+                        />
+
+                        <label>Fine</label>
+                        <input
+                            type="number"
+                            name="user[fine]"
+                            value="<%= user.fine %>"
+                        />
+
+                        <input
+                            id="id"
+                            type="text"
+                            name="user[id]"
+                            value="<%= user._id %>"
+                            style="display: none;"
+                        />
+
+                        <input
+                            id="avatar-filename"
+                            type="text"
+                            name="user[avatar_filename]"
+                            value="<%= user.avatar %>"
+                            style="display: none;"
+                        />
+                        <button class="submit">
+                            <i class="fas fa-check"></i> update user
+                        </button>
+                        <button class="del-btn">
+                            <i class="far fa-trash-alt"></i> delete user
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // overlay and PROMPT
+            var overlay = document.querySelector('.edit-overlay');
+            var okBtn = document.querySelector('.edit-btn-ok');
+            var promptTag = document.querySelector('.tag');
+
+            // delete overlay and PROMPT
+            var delOverlay = document.querySelector('.del-overlay');
+            var delOk = document.querySelector('.del-btn-ok');
+            var delCancel = document.querySelector('.del-btn-cancel');
+
+            // canvas
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+            var fileinput = document.getElementById('file');
+            var img = new Image();
+
+            // delete button
+            var delBtn = document.querySelector('.del-btn');
+
+            // user id
+            var id = document.getElementById('id');
+
+            var updatePhoto = false;
+            var deleteUser = false;
+
+            // image file
+            var avatar = document.getElementById('avatar');
+
+            // delete button event
+            delBtn.addEventListener('click', function() {
+                deleteUser = true;
+                delOverlay.style.display = 'flex';
+            });
+
+            // delete ok button
+            delOk.addEventListener('click', function() {
+                deleteUser = false;
+                delOverlay.style.display = 'none';
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/delete',
+                    data: { id: id.value },
+                    success: function(res) {
+                        if (res.success) {
+                            overlay.style.display = 'flex';
+                            promptTag.innerHTML =
+                                '<i class="far fa-check-circle fg-green"></i> successfully deleted user';
+                        }
+                    }
+                });
+            });
+
+            // delete ok button
+            delCancel.addEventListener('click', function() {
+                deleteUser = false;
+                delOverlay.style.display = 'none';
+            });
+
+            // edit form submit
+            $('#edit-form').submit(function(e) {
+                e.preventDefault();
+
+                // if NOT uploading a new photo
+                // execute a plain ajax request
+                if (!updatePhoto && !deleteUser) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/edit_without_photo',
+                        data: $(this).serialize(),
+                        beforeSend: function() {
+                            $('.submit').text('Processing request ...');
+                            $('.submit').attr('disabled', 'disabled');
+                        },
+                        success: function(res) {
+                            if (res.success) {
+                                overlay.style.display = 'flex';
+                            }
+
+                            $('.submit').text('confirm update');
+                            $('.submit').removeAttr('disabled');
+                        }
+                    });
+
+                    // if uploading a new Photo
+                    // execute a multi-form request
+                } else if (updatePhoto && !deleteUser) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/admin/edit_with_photo',
+                        data: new FormData(this),
+                        contentType: false,
+                        cache: false,
+                        processData: false,
+                        beforeSend: function() {
+                            $('.submit').text('Processing request ...');
+                            $('.submit').attr('disabled', 'disabled');
+                        },
+                        success: function(res) {
+                            if (res.success) {
+                                overlay.style.display = 'flex';
+                            }
+
+                            $('.submit').text('confirm update');
+                            $('.submit').removeAttr('disabled');
+                        }
+                    });
+                }
+            });
+
+            // put old avatar to canvas
+            drawImageScaled(avatar, context);
+
+            // upload button listener
+            fileinput.onchange = function(evt) {
+                var files = evt.target.files; // FileList object
+                var file = files[0];
+
+                if (file.type.match('image.*')) {
+                    var reader = new FileReader();
+                    // Read in the image file as a data URL.
+                    reader.readAsDataURL(file);
+                    reader.onload = function(evt) {
+                        if (evt.target.readyState == FileReader.DONE) {
+                            $('.submit').attr('disabled', 'disabled');
+
+                            img.src = evt.target.result;
+                            img.onload = () => drawImageScaled(img, context);
+                            updatePhoto = true;
+
+                            $('.submit').removeAttr('disabled');
+                        }
+                    };
+                } else {
+                    alert('not an image');
+                }
+            };
+
+            // scale image
+            function drawImageScaled(img, ctx) {
+                var canvas = ctx.canvas;
+                var hRatio = canvas.width / img.width;
+                var vRatio = canvas.height / img.height;
+                var ratio = Math.min(hRatio, vRatio);
+                var centerShift_x = (canvas.width - img.width * ratio) / 2;
+                var centerShift_y = (canvas.height - img.height * ratio) / 2;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(
+                    img,
+                    0,
+                    0,
+                    img.width,
+                    img.height,
+                    centerShift_x,
+                    centerShift_y,
+                    img.width * ratio,
+                    img.height * ratio
+                );
+            }
+
+            // ok button
+            okBtn.addEventListener('click', function() {
+                window.location.href = `/admin/show/users`;
+                overlay.style.display = 'none';
+            });
+        </script>
+    </body>
+</html>

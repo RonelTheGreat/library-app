@@ -1,0 +1,177 @@
+.parent {
+    grid-template-columns: 34% 34% 30%;
+    grid-template-rows: 12% 64% 12% 12%;
+    grid-template-areas:
+        'ctag btag name'
+        'cam scbooks dp'
+        'bconf scbooks dp'
+        'back scbooks dp';
+    column-gap: 1%;
+}
+
+/*************************************************/
+/*                  CAMERA TAG                   */
+/*************************************************/
+.cam-tag {
+    grid-area: ctag;
+    display: grid;
+    grid-template-columns: 22% 74%;
+    grid-template-areas: 'cicon msgt';
+    align-items: center;
+    column-gap: 2%;
+}
+.cam-icon {
+    color: #b1b1b1;
+    grid-area: cicon;
+    justify-self: right;
+}
+.msg-tag {
+    grid-area: msgt;
+    justify-self: left;
+}
+
+.tag-error {
+    padding: 0.4em 2em;
+    font-size: 0.9em;
+}
+
+.tag-error-sm {
+    padding: 0.6em 0.3em;
+    font-size: 0.8em;
+}
+
+.success {
+    color: #32ff7e;
+    border: 2px solid #32ff7e;
+    border-radius: 0.2em;
+    padding: 0.4em 0.2em;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+/*               END CAMERA TAG                  */
+/*************************************************/
+
+/*************************************************/
+/*                     CAMERA                    */
+/*************************************************/
+.cam {
+    grid-area: cam;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+    position: relative;
+    padding: 0;
+}
+
+.cam video {
+    max-width: 100%;
+    border-radius: 0.2em;
+    margin-top: 1%;
+}
+/*                 END CAMERA                    */
+/*************************************************/
+
+/*************************************************/
+/*                  BOOK-TAG                     */
+/*************************************************/
+.book-tag {
+    grid-area: btag;
+    display: grid;
+    grid-template-columns: 30% 82%;
+    grid-template-areas: 'bicon bmsg';
+    align-items: center;
+    column-gap: 2%;
+}
+.btag-msg {
+    grid-area: bmsg;
+    justify-self: left;
+    text-transform: capitalize;
+}
+.book-icon {
+    grid-area: bicon;
+    color: #b1b1b1;
+    justify-self: right;
+}
+/*                   END BOOK-TAG                */
+/*************************************************/
+
+/*************************************************/
+/*                SCANNED BOOKS                  */
+/*************************************************/
+.scanned-books {
+    grid-area: scbooks;
+    position: relative;
+    overflow-y: scroll;
+    padding: 2%;
+}
+.book {
+    box-shadow: 0 0 2px #0e0b24;
+    margin-bottom: 0.8em;
+}
+.title {
+    text-align: center;
+    padding: 0.3em;
+    text-transform: capitalize;
+}
+.details {
+    font-size: 0.85em;
+    padding: 0.5em 1em;
+    text-transform: capitalize;
+}
+.due-date {
+    color: #0fbcf9;
+}
+/*              END SCANNED BOOKS                */
+/*************************************************/
+
+/*************************************************/
+/*                     NAME                      */
+/*************************************************/
+.name {
+    grid-area: name;
+    text-align: center;
+    text-transform: uppercase;
+}
+/*                    END NAME                   */
+/*************************************************/
+
+/*************************************************/
+/*                      DP                       */
+/*************************************************/
+.dp {
+    grid-area: dp;
+    position: relative;
+}
+.dp img {
+    max-width: 100%;
+    max-height: 100%;
+}
+/*                    END DP                  */
+/*************************************************/
+
+/*************************************************/
+/*                CONFIRM BUTTON                 */
+/*************************************************/
+.btn-confirm {
+    grid-area: bconf;
+    display: grid;
+    text-align: center;
+    align-self: center;
+    box-shadow: 0 0 1px #0e0b24;
+}
+.btn-confirm > a {
+    padding: 1em;
+}
+/*            END CONFIRM BUTTON                 */
+/*************************************************/
+
+/*************************************************/
+/*                  BACK BUTTON                  */
+/*************************************************/
+.btn-back {
+    grid-area: back;
+    text-align: center;
+    align-self: center;
+}
+/*            END CONFIRM BUTTON                 */
+/*************************************************/

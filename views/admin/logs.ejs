@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>AutoLib | ADMIN</title>
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/admin.css" />
+        <link rel="stylesheet" href="/assets/css/all.css" />
+    </head>
+
+    <body>
+        <script src="/assets/js/jquery.js"></script>
+        <div class="parent">
+            <% include ../partials/nav %>
+
+            <div class="heading">
+                <h3><i class="fas fa-clipboard-list"></i> logs</h3>
+            </div>
+
+            <div class="logs-main">
+                <div id="selection">
+                    <h4>select logs to view</h4>
+                    <select name="category" class="category">
+                        <option>options</option>
+                        <option value="borrowed">borrowed books</option>
+                        <option value="returned">returned books</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let main = document.querySelector('.logs-main');
+            let message = document.createElement('h1');
+            var categoryEl = document.querySelector('.category');
+            let logs = document.createElement('div');
+            var category = 'borrowed';
+
+            // event listener for log selection
+            categoryEl.addEventListener('change', e => {
+                logs.innerHTML = '';
+                category = e.target.value;
+                $.ajax({
+                    type: 'GET',
+                    url: `/admin/show/${category}/logs`,
+                    success: res => {
+                        message.innerHTML = '';
+                        if (!res.success) return;
+
+                        if (res.logs[0].logName === 'borrowed') {
+                            res.logs.forEach(log => {
+                                createBook(
+                                    log.logName,
+                                    log.borrower,
+                                    log.fine,
+                                    log.book,
+                                    log.date
+                                );
+                            });
+                        } else if (res.logs[0].logName === 'returned') {
+                            res.logs.forEach(log => {
+                                createBook(
+                                    log.logName,
+                                    log.borrower,
+                                    log.fine,
+                                    log.book,
+                                    log.date
+                                );
+                            });
+                        }
+                    }
+                });
+            });
+
+            let createBook = (
+                logName,
+                borrower,
+                fine,
+                { ...book },
+                { ...date }
+            ) => {
+                const {
+                    title,
+                    author,
+                    publisher,
+                    yearPublished,
+                    validity
+                } = book;
+
+                const { dateBorrowed, dueDate, dateReturned } = date;
+
+                let bookEl = document.createElement('div');
+                let titleEl = document.createElement('div');
+                let details = document.createElement('div');
+
+                logs.classList.add('logs');
+                bookEl.classList.add('book');
+                details.classList.add('details');
+
+                titleEl.innerHTML = `<i class="fas fa-swatchbook"></i> ${title}`;
+                let borrowerEl = document.createElement('p');
+                let editionEl = document.createElement('p');
+                let authorEl = document.createElement('p');
+                let publisherEl = document.createElement('p');
+                let yearPublishedEl = document.createElement('p');
+                let validityEl = document.createElement('p');
+                let dueDateEl = document.createElement('p');
+                let fineEl = document.createElement('p');
+                let dateEl = document.createElement('p');
+
+                borrowerEl.textContent = `Borrower: ${borrower}`;
+                dateEl.textContent =
+                    dateBorrowed !== undefined
+                        ? `Date Borrowed: ${dateBorrowed}`
+                        : `Date Returned: ${dateReturned}`;
+
+                dueDateEl.textContent = `Due Date: ${dueDate}`;
+                validityEl.textContent =
+                    validity > 1
+                        ? `Validity: ${validity} days`
+                        : `Validity: ${validity} day`;
+                yearPublishedEl.textContent = `Year Published: ${yearPublished}`;
+                publisherEl.textContent = `Publisher: ${publisher}`;
+                authorEl.textContent = `Author: ${author}`;
+                fine && (fineEl.textContent = `Fine: ${fine} pesos`);
+                fine && (fineEl.style.color = '#fc7242');
+
+                titleEl.classList.add('title');
+                borrowerEl.classList.add('borrower');
+                dueDateEl.classList.add('due-date');
+                validityEl.classList.add('validity');
+                dateEl.classList.add('date-borrowed');
+
+                if (book.edition) {
+                    editionEl.textContent = `Edition: ${book.edition}`;
+                    details.appendChild(editionEl);
+                }
+
+                details.appendChild(authorEl);
+                details.appendChild(yearPublishedEl);
+                details.appendChild(publisherEl);
+                details.appendChild(validityEl);
+                details.appendChild(dateEl);
+                details.appendChild(dueDateEl);
+                details.appendChild(borrowerEl);
+                fine && details.appendChild(fineEl);
+                bookEl.appendChild(titleEl);
+                bookEl.appendChild(details);
+                logs.appendChild(bookEl);
+                main.appendChild(logs);
+            };
+        </script>
+    </body>
+</html>

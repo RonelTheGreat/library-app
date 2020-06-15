@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>AutoLib | ADMIN</title>
+        <link rel="stylesheet" href="/assets/css/main.css" />
+        <link rel="stylesheet" href="/assets/css/admin.css" />
+        <link rel="stylesheet" href="/assets/css/all.css" />
+    </head>
+
+    <body>
+        <div class="parent">
+            <% include ../partials/nav %>
+
+            <div class="heading">
+                <h3><i class="fas fa-user-friends"></i> admins</h3>
+            </div>
+
+            <div class="admins-main">
+                <% admins.forEach(admin => { %>
+                <div class="admin">
+                    <p>
+                        <i class="fas fa-user-secret"></i> <%= admin.username %>
+                    </p>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </body>
+</html>

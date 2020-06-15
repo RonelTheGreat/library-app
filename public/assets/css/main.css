@@ -1,0 +1,281 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../fonts/montserrat-regular-webfont.woff') format('woff'),
+        url('../fonts/montserrat-regular-webfont.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Permanent Marker';
+    src: url('../fonts/permanentmarker-regular-webfont.woff') format('woff'),
+        url('../fonts/permanentmarker-regular-webfont.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Courgette';
+    src: url('../fonts/courgette-regular-webfont.woff') format('woff'),
+        url('../fonts/courgette-regular-webfont.woff2') format('woff2');
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #f0f0f0;
+    background-color: #15142b;
+}
+
+.parent {
+    display: grid;
+    width: 97.5vw;
+    height: 96vh;
+    padding: 1%;
+}
+
+button {
+    font-family: inherit;
+    color: inherit;
+}
+
+/*************************************************/
+/*             ERROR / SUCCESS MSGS              */
+/*************************************************/
+.success {
+    color: #32ff7e;
+    border: 2px solid #32ff7e;
+    border-radius: 0.2em;
+    padding: 0.3em;
+    width: 97%;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1.1em;
+}
+.error {
+    color: #ef4a11;
+    border: 2px solid #ef4a11;
+    border-radius: 0.2em;
+    padding: 0.2em;
+    text-align: center;
+    margin-top: 0;
+    width: 60%;
+    margin: 2% 20%;
+    text-transform: capitalize;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.tag-error {
+    color: #ef4a11;
+    border: 2px solid #ef4a11;
+    border-radius: 0.2em;
+    padding: 0.6em 1em;
+    text-align: center;
+    margin-top: 0;
+    width: 60%;
+    margin: 2% 0%;
+    text-transform: uppercase;
+    font-size: 1em;
+    font-weight: bold;
+}
+/*          END ERROR / SUCCESS MSGS             */
+/*************************************************/
+
+/*************************************************/
+/*                     FORM                      */
+/*************************************************/
+form label {
+    font-size: 0.9em;
+    font-family: inherit;
+}
+
+form .shrink {
+    display: flex;
+    padding: 1% 1% 5%;
+    width: 97%;
+}
+form .shrink div {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+form .shrink div input {
+    padding: 0.4em;
+    width: 70%;
+    margin: 0 auto;
+}
+
+form .form-buttons {
+    display: flex;
+    width: 98%;
+}
+form .form-buttons .submit,
+form .form-buttons .del-btn {
+    margin: 0 1%;
+}
+
+form input[type='text'],
+input[type='password'],
+input[type='number'] {
+    border: 2px solid #1a1635;
+    border-radius: 0.3em;
+    font-size: 1em;
+}
+
+form input:focus {
+    outline: none;
+    border: 2px solid #00c689;
+    border-radius: 0.2em;
+    box-shadow: 0 0 2px #00c689;
+}
+
+form button {
+    border: 1px solid #00c689;
+    background-color: #00c689;
+    border-radius: 0.3em;
+    color: inherit;
+}
+
+form button:hover {
+    cursor: pointer;
+}
+
+form button:focus {
+    outline: none;
+}
+/*                 END FORM                      */
+/*************************************************/
+
+/*************************************************/
+/*                   INPUT[FILE]                 */
+/*************************************************/
+input[type='file'] {
+    opacity: 0.1;
+    z-index: -1;
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    overflow: hidden;
+}
+
+input[type='file']:focus {
+    outline: none;
+    border: none;
+}
+/*               END INPUT[FILE]                 */
+/*************************************************/
+
+/*************************************************/
+/*               BACKGROUND COLORS               */
+/*************************************************/
+.bg-blue {
+    background-color: #0fbcf9;
+}
+
+.bg-green {
+    background-color: #00c689;
+}
+
+.bg-orange {
+    background-color: #fc7242;
+}
+
+.bg-navy {
+    background-color: #1a1635;
+}
+/*            END BACKGROUND COLORS              */
+/*************************************************/
+
+/*************************************************/
+/*               FOREGROUND COLORS               */
+/*************************************************/
+.fg-orange {
+    color: #fc7242;
+}
+
+.fg-blue {
+    color: #0fbcf9;
+}
+
+.fg-green {
+    color: #00c689;
+}
+/*               FOREGROUND COLORS               */
+/*************************************************/
+
+/*************************************************/
+/*                     LINKS                     */
+/*************************************************/
+.link {
+    color: #f0f0f0;
+    text-decoration: none;
+    border-radius: 0.3em;
+}
+.link:hover {
+    text-decoration: underline;
+}
+/*                  END LINKS                    */
+/*************************************************/
+
+/*************************************************/
+/*                    FOOTER                     */
+/*************************************************/
+.footer {
+    grid-area: footer;
+    text-align: center;
+    font-size: 0.9em;
+    align-self: flex-end;
+    color: #b1b1b5;
+}
+/*                   END FOOTER                  */
+/*************************************************/
+
+/*************************************************/
+/*                  SCROLL BAR                   */
+/*************************************************/
+::-webkit-scrollbar {
+    width: 0.2rem;
+}
+
+::-webkit-scrollbar-track {
+    background: #b1b1b1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+/*               END SCROLL BAR                  */
+/*************************************************/
+
+@media (min-width: 320px) and (max-width: 480px) {
+    /*************************************************/
+    /*             ERROR / SUCCESS MSGS              */
+    /*************************************************/
+    .success {
+        color: #51d4ac;
+        border: 2px solid #51d4ac;
+        border-radius: 0.2em;
+        padding: 0.3em;
+        width: 94%;
+        text-transform: uppercase;
+        text-align: center;
+    }
+    .error {
+        width: 90%;
+        margin: 2% 3%;
+    }
+    /*          END ERROR / SUCCESS MSGS             */
+    /*************************************************/
+
+    /*************************************************/
+    /*                  SCROLL BAR                   */
+    /*************************************************/
+    ::-webkit-scrollbar {
+        width: 0rem;
+    }
+    /*               END SCROLL BAR                  */
+    /*************************************************/
+}
